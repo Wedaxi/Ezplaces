@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Accompanist",
+    "author": "Google",
+    "description": "Accompanist is a group of libraries that aim to supplement Jetpack Compose with features that are commonly required by developers but not yet available.",
+    "url": "https://google.github.io/accompanist/",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/google/accompanist/main/LICENSE"
+  },
+  {
+    "name": "Coil",
+    "author": "Coil Contributors",
+    "description": "An image loading library for Android backed by Kotlin Coroutines.",
+    "url": "https://coil-kt.github.io/coil/",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/coil-kt/coil/main/LICENSE.txt"
+  },
+  {
+    "name": "Compose",
+    "author": "AOSP",
+    "description": "Define your UI programmatically with composable functions that describe its shape and data dependencies.",
+    "url": "https://developer.android.com/jetpack/androidx/releases/compose",
+    "license": "Apache License 2.0",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0"
+  },
+  {
+    "name": "Gson",
+    "author": "Google",
+    "description": "Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Gson can work with arbitrary Java objects including pre-existing objects that you do not have source-code of.",
+    "url": "https://github.com/google/gson",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/google/gson/master/LICENSE"
+  },
+  {
+    "name": "Karla",
+    "author": "Jonny Pinhorn",
+    "description": "Karla is an outstanding grotesque sans serif typeface family created by Jonathan Pinhorn (@jonpinhorn_type, a graduate of the MA in Typeface Design at the University of Reading), released through Google Webfonts in 2012.",
+    "url": "https://fonts.google.com/specimen/Karla",
+    "license": "SIL Open Font License 1.1",
+    "licenseUrl": "https://raw.githubusercontent.com/googlefonts/karla/main/OFL.txt"
+  },
+  {
+    "name": "Koin",
+    "author": "Arnaud Giuliani",
+    "description": "A pragmatic lightweight dependency injection framework for Kotlin developers. Koin is a DSL, a light container and a pragmatic API.",
+    "url": "https://insert-koin.io/",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/InsertKoinIO/koin/master/LICENSE"
+  },
+  {
+    "name": "Lifecycle",
+    "author": "AOSP",
+    "description": "Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component, such as activities and fragments. These components help you produce better-organized, and often lighter-weight code, that is easier to maintain.",
+    "url": "https://developer.android.com/jetpack/androidx/releases/lifecycle",
+    "license": "Apache License 2.0",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0"
+  },
+  {
+    "name": "Material Components",
+    "author": "Google",
+    "description": "Material Components for Android (MDC-Android) help developers execute Material Design. Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional Android apps.",
+    "url": "https://material.io/develop/android",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/material-components/material-components-android/master/LICENSE"
+  },
+  {
+    "name": "Room",
+    "author": "AOSP",
+    "description": "The Room persistence library provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.",
+    "url": "https://developer.android.com/jetpack/androidx/releases/room",
+    "license": "Apache License 2.0",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0"
+  },
+  {
+    "name": "Themis",
+    "author": "Cossack Labs",
+    "description": "Themis provides strong, usable cryptography for busy people.",
+    "url": "https://github.com/cossacklabs/themis",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/cossacklabs/themis/master/LICENSE"
+  },
+  {
+    "name": "Timber",
+    "author": "Jake Wharton",
+    "description": "This is a logger with a small, extensible API which provides utility on top of Android's normal Log class.",
+    "url": "https://github.com/JakeWharton/timber",
+    "license": "Apache License 2.0",
+    "licenseUrl": "https://raw.githubusercontent.com/JakeWharton/timber/trunk/LICENSE.txt"
+  }
+]

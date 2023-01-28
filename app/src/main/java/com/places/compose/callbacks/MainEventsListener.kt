@@ -1,0 +1,3 @@
+package com.places.compose.callbacks
+
+interface MainEventsListener: ShowAdListener, ShowAutoCompleteActivityListener
