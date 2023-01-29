@@ -1,6 +1,7 @@
 package com.places.compose.data.model
 
 import android.location.Location
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
@@ -11,8 +12,8 @@ import kotlin.math.sqrt
 
 @Entity(tableName = "location")
 data class CoordinatesBO(
-    val latitude: Double,
-    val longitude: Double,
+    @ColumnInfo(name = "latitude") val latitude: Double,
+    @ColumnInfo(name = "longitude") val longitude: Double,
     @PrimaryKey val id: Int = 0
 ) {
     internal constructor(latLng: LatLng): this(

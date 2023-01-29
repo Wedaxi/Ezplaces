@@ -18,11 +18,11 @@ class AutoCompleteActivityContract: ActivityResultContract<CoordinatesBO?, Place
             .setLocationRestriction(input?.getBoundingRectangle(500)?.let { RectangularBounds.newInstance(it) })
             .build(context)
 
-    override fun parseResult(resultCode: Int, intent: Intent?): PlaceBO? {
-        return if (resultCode == Activity.RESULT_OK && intent != null) {
+    override fun parseResult(resultCode: Int, intent: Intent?): PlaceBO? = runCatching {
+        if (resultCode == Activity.RESULT_OK && intent != null) {
             PlaceBO(Autocomplete.getPlaceFromIntent(intent))
         } else {
             null
         }
-    }
+    }.getOrNull()
 }

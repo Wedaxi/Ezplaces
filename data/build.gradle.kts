@@ -41,7 +41,6 @@ android {
 dependencies {
 
     val activityVersion: String by rootProject.extra
-    val gsonVersion: String by rootProject.extra
     val koinVersion: String by rootProject.extra
     val roomVersion: String by rootProject.extra
 
@@ -50,11 +49,8 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.0.0")
     implementation("com.google.maps.android:android-maps-utils:3.1.0")
 
-    implementation("com.google.code.gson:gson:$gsonVersion")
-
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-
     kapt("androidx.room:room-compiler:$roomVersion")
 
     implementation("io.insert-koin:koin-core:$koinVersion")

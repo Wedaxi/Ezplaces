@@ -2,6 +2,7 @@ package com.places.compose.data.model
 
 import android.net.Uri
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -14,7 +15,7 @@ data class PlaceBO(
     @PrimaryKey val id: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "address") val address: String? = null,
-    @ColumnInfo(name = "coordinates") val coordinates: CoordinatesBO? = null,
+    @Embedded(prefix = "loc_") val coordinates: CoordinatesBO? = null,
     @ColumnInfo(name = "icon") val icon: String? = null,
     @ColumnInfo(name = "iconBackground") val iconBackground: Int? = null,
     @ColumnInfo(name = "phone") val phone: String? = null,

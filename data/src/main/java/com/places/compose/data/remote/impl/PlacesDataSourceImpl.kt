@@ -32,7 +32,11 @@ internal class PlacesDataSourceImpl(
         }
     }
 
-    private suspend fun <T> getData(task: Task<T>) = runCatching { task.await() }.onFailure { Log.e("PlacesDataSourceImpl", it.toString()) }.getOrNull()
+    private suspend fun <T> getData(task: Task<T>): T? = runCatching {
+        task.await()
+    }.onFailure {
+        Log.e("PlacesDataSourceImpl", it.toString())
+    }.getOrNull()
 
     @SuppressLint("MissingPermission")
     override suspend fun getLocation() = getData(fusedLocationClient.lastLocation)
@@ -88,7 +92,6 @@ internal class PlacesDataSourceImpl(
         placesClient.findAutocompletePredictions(
             FindAutocompletePredictionsRequest.builder()
                 .setQuery(query)
-                .setCountries()
                 .setOrigin(getLocation()?.let { LatLng(it.latitude, it.longitude) })
                 .build()
         )
