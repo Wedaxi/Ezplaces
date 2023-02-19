@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra.get("composeVersion") as String
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
     packagingOptions {
         resources {
@@ -57,9 +57,11 @@ dependencies {
 
     val activityVersion: String by rootProject.extra
     val accompanistVersion: String by rootProject.extra
-    val gsonVersion: String by rootProject.extra
     val composeVersion: String by rootProject.extra
+    val coreKtsVersion: String by rootProject.extra
+    val gsonVersion: String by rootProject.extra
     val koinVersion: String by rootProject.extra
+    val lifecycleVersion: String by rootProject.extra
 
     val adsEnabled: Boolean by rootProject.extra
     if (adsEnabled) {
@@ -70,10 +72,10 @@ dependencies {
 
     implementation(project(path = ":data"))
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:$coreKtsVersion")
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.activity:activity-compose:$activityVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.navigation:navigation-compose:2.5.3")
 
     implementation("com.google.android.material:material:1.8.0")
