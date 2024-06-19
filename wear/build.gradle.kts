@@ -5,12 +5,11 @@ plugins {
 
 android {
     namespace = "com.places.compose"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.places.compose"
         minSdk = 25
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
         vectorDrawables {
@@ -36,9 +35,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.5.5"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -52,6 +51,8 @@ dependencies {
     val coreKtsVersion: String by rootProject.extra
     val lifecycleVersion: String by rootProject.extra
     val wearComposeVersion: String by rootProject.extra
+
+    implementation(project(path = ":data"))
 
     implementation("androidx.core:core-ktx:$coreKtsVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")

@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 @Entity(tableName = "location")
-data class CoordinatesBO(
+data class  CoordinatesBO(
     @ColumnInfo(name = "latitude") val latitude: Double,
     @ColumnInfo(name = "longitude") val longitude: Double,
     @PrimaryKey val id: Int = 0

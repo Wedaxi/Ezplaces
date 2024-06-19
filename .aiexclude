@@ -1,0 +1,5 @@
+ #Exclude everything
+*
+
+# Include the specific folder you want to keep
+!scripts/**

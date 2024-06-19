@@ -6,11 +6,10 @@ plugins {
 
 android {
     namespace = "com.places.compose.data"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
 
         val apiProperties: java.util.Properties by rootProject.extra
 
@@ -35,6 +34,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 }
 
