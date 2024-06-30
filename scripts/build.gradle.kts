@@ -1,6 +1,6 @@
 plugins {
+    alias(libs.plugins.kotlin.jvm)
     id("java-library")
-    id("org.jetbrains.kotlin.jvm")
 }
 
 java {
@@ -9,6 +9,6 @@ java {
 }
 
 dependencies {
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
     implementation(kotlin("script-runtime"))
 }

@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -35,7 +35,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
     }
     packaging {
         resources {
@@ -46,25 +46,21 @@ android {
 
 dependencies {
 
-    val activityVersion: String by rootProject.extra
-    val composeVersion: String by rootProject.extra
-    val coreKtsVersion: String by rootProject.extra
-    val lifecycleVersion: String by rootProject.extra
-    val wearComposeVersion: String by rootProject.extra
-
     implementation(project(path = ":data"))
 
-    implementation("androidx.core:core-ktx:$coreKtsVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.wear.compose:compose-material:$wearComposeVersion")
-    implementation("androidx.wear.compose:compose-foundation:$wearComposeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.activity:activity-compose:$activityVersion")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
 
-    implementation("com.google.android.gms:play-services-wearable:18.0.0")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.wear.compose.material)
+    implementation(libs.wear.compose.foundation)
+    implementation(libs.androidx.compose.ui.tooling.preview)
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+    implementation(libs.wear.play.services)
+
+
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

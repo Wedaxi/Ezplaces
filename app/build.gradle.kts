@@ -1,9 +1,13 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.android)
+}
+
+object Constants {
+    const val ADS_ENABLED = false
 }
 
 android {
@@ -31,10 +35,9 @@ android {
             dimension = "device"
             minSdk = 21
             versionCode = 13
-            versionName = "0.7.0"
+            versionName = "0.7.1"
 
-            val adsEnabled: Boolean by rootProject.extra
-            buildConfigField("boolean", "ENABLE_ADS", "$adsEnabled")
+            buildConfigField("boolean", "ENABLE_ADS", "${Constants.ADS_ENABLED}")
         }
         create("wear") {
             dimension = "device"
@@ -57,7 +60,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
     }
     packaging {
         resources {
@@ -69,17 +72,7 @@ android {
 
 dependencies {
 
-    val activityVersion: String by rootProject.extra
-    val accompanistVersion: String by rootProject.extra
-    val composeVersion: String by rootProject.extra
-    val coreKtsVersion: String by rootProject.extra
-    val gsonVersion: String by rootProject.extra
-    val koinVersion: String by rootProject.extra
-    val lifecycleVersion: String by rootProject.extra
-    val wearComposeVersion: String by rootProject.extra
-
-    val adsEnabled: Boolean by rootProject.extra
-    if (adsEnabled) {
+    if (Constants.ADS_ENABLED) {
         // "mobileImplementation"(project(path = ":ads"))
     } else {
         "mobileImplementation"(project(path = ":ads-disabled"))
@@ -87,49 +80,52 @@ dependencies {
 
     implementation(project(path = ":data"))
 
-    implementation("androidx.core:core-ktx:$coreKtsVersion")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.activity:activity-compose:$activityVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.google.material)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-perf-ktx")
+    val firebaseBom = platform(libs.google.firebase.bom)
+    implementation(firebaseBom)
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.google.firebase.crashlytics)
+    implementation(libs.google.firebase.perf)
 
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.livedata)
+    implementation(libs.androidx.compose.ui.tooling.preview)
 
-    implementation("io.insert-koin:koin-core:$koinVersion")
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.1")
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
-    "mobileImplementation"("com.google.accompanist:accompanist-pager:$accompanistVersion")
-    "mobileImplementation"("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
-    "mobileImplementation"("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
-    "mobileImplementation"("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
-    "mobileImplementation"("com.google.accompanist:accompanist-permissions:$accompanistVersion")
-    "mobileImplementation"("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    "mobileImplementation"(libs.google.accompanist.pager)
+    "mobileImplementation"(libs.google.accompanist.pager.indicators)
+    "mobileImplementation"(libs.google.accompanist.navigation.animation)
+    "mobileImplementation"(libs.google.accompanist.swiperefresh)
+    "mobileImplementation"(libs.google.accompanist.permissions)
+    "mobileImplementation"(libs.google.accompanist.systemuicontroller)
 
-    "mobileImplementation"("com.google.code.gson:gson:$gsonVersion")
+    "mobileImplementation"(libs.gson)
 
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation(libs.coil.compose)
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
-    "wearImplementation"("androidx.wear.compose:compose-material:$wearComposeVersion")
-    "wearImplementation"("androidx.wear.compose:compose-foundation:$wearComposeVersion")
+    "wearImplementation"(libs.wear.compose.material)
+    "wearImplementation"(libs.wear.compose.foundation)
 
-    "wearImplementation"("com.google.android.gms:play-services-wearable:18.2.0")
+    "wearImplementation"(libs.wear.play.services)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

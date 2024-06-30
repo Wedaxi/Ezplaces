@@ -1,7 +1,10 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -11,15 +14,15 @@ android {
     defaultConfig {
         minSdk = 21
 
-        val apiProperties: java.util.Properties by rootProject.extra
+        val apiPropertiesFile = rootProject.file("api.properties")
+        val apiProperties = Properties()
+        apiProperties.load(FileInputStream(apiPropertiesFile))
 
         buildConfigField("String", "ENCRYPTION_KEY", apiProperties.getProperty("encryptionKey"))
         buildConfigField("String", "ENCRYPTED_API_KEY", apiProperties.getProperty("encryptedApiKey"))
 
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
 
@@ -43,21 +46,17 @@ android {
 
 dependencies {
 
-    val activityVersion: String by rootProject.extra
-    val koinVersion: String by rootProject.extra
-    val roomVersion: String by rootProject.extra
+    implementation(libs.androidx.activity.ktx)
 
-    implementation("androidx.activity:activity-ktx:$activityVersion")
+    implementation(libs.places)
+    implementation(libs.google.maps.utils)
 
-    implementation("com.google.android.libraries.places:places:3.0.0")
-    implementation("com.google.maps.android:android-maps-utils:3.1.0")
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
-    implementation("io.insert-koin:koin-core:$koinVersion")
-    implementation("io.insert-koin:koin-android:$koinVersion")
-
-    implementation("com.cossacklabs.com:themis:0.13.1")
+    implementation(libs.themis)
 }

@@ -1,14 +1,17 @@
+import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     compileSdk = 33
 
-    val apiProperties: Properties by rootProject.extra
+    val apiPropertiesFile = rootProject.file("api.properties")
+    val apiProperties = Properties()
+    apiProperties.load(FileInputStream(apiPropertiesFile))
 
     defaultConfig {
         minSdk = 21
@@ -39,5 +42,5 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-ads:21.4.0")
+    implementation(libs.google.play.services.ads)
 }
