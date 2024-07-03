@@ -88,14 +88,10 @@ dependencies {
 
     implementation(libs.google.material)
 
-    val firebaseBom = platform(libs.google.firebase.bom)
-    implementation(firebaseBom)
-    implementation(libs.google.firebase.analytics)
-    implementation(libs.google.firebase.crashlytics)
-    implementation(libs.google.firebase.perf)
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.bundles.firebase)
 
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.livedata)
@@ -105,12 +101,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
 
-    "mobileImplementation"(libs.google.accompanist.pager)
-    "mobileImplementation"(libs.google.accompanist.pager.indicators)
-    "mobileImplementation"(libs.google.accompanist.navigation.animation)
-    "mobileImplementation"(libs.google.accompanist.swiperefresh)
-    "mobileImplementation"(libs.google.accompanist.permissions)
-    "mobileImplementation"(libs.google.accompanist.systemuicontroller)
+    "mobileImplementation"(libs.bundles.accompanist)
 
     "mobileImplementation"(libs.gson)
 
@@ -126,6 +117,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }

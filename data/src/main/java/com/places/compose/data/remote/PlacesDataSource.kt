@@ -7,6 +7,7 @@ import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
+import com.google.android.libraries.places.api.net.IsOpenResponse
 
 interface PlacesDataSource {
 
@@ -21,4 +22,6 @@ interface PlacesDataSource {
     suspend fun getPhoto(photoMetadata: PhotoMetadata): FetchPhotoResponse?
 
     suspend fun findPlace(query: String): FindAutocompletePredictionsResponse?
+
+    suspend fun isOpen(id: String): IsOpenResponse?
 }

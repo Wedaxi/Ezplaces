@@ -12,11 +12,15 @@ class DetailViewModel(
     id: String,
     getPlaceUseCase: GetPlaceUseCase,
     getFavoriteUseCase: GetFavoriteUseCase,
+    getIsOpenUseCase: GetIsOpenUseCase,
     private val addFavoriteUseCase: AddFavoriteUseCase,
     private val removeFavoriteUseCase: RemoveFavoriteUseCase
 ): ViewModel() {
 
     var isFavorite by mutableStateOf(false)
+        private set
+
+    var isOpen by mutableStateOf(false)
         private set
 
     var place by mutableStateOf<PlaceBO?>(null)
@@ -28,6 +32,9 @@ class DetailViewModel(
         }
         getFavoriteUseCase.invoke(scope = viewModelScope, params = id) {
             isFavorite = it
+        }
+        getIsOpenUseCase.invoke(scope = viewModelScope, params = id) {
+            isOpen = it
         }
     }
 

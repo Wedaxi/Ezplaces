@@ -25,4 +25,6 @@ interface PlacesRepository {
     suspend fun addFavorite(place: PlaceBO)
 
     suspend fun removeFavorite(place: PlaceBO)
+
+    suspend fun isOpen(id: String): Boolean
 }

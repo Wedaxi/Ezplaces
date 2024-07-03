@@ -21,11 +21,10 @@ data class PlaceBO(
     @ColumnInfo(name = "phone") val phone: String? = null,
     @Ignore val rating: Double? = null,
     @Ignore val numRatings: Int = 0,
-    @Ignore val isOpen: Boolean? = null,
     @ColumnInfo(name = "webSite") val webSite: Uri? = null,
     @Ignore val plusCode: String? = null,
     @Ignore val schedule: List<String> = emptyList(),
-    @Ignore internal val types: List<Place.Type> = emptyList(),
+    @Ignore internal val types: List<String> = emptyList(),
     @Ignore internal val photoMetadata: List<PhotoMetadata> = emptyList()
 ) {
 
@@ -42,18 +41,17 @@ data class PlaceBO(
         phone = place.phoneNumber,
         rating = place.rating,
         numRatings = place.userRatingsTotal ?: 0,
-        isOpen = place.isOpen,
         webSite = place.websiteUri,
         plusCode = place.plusCode?.globalCode,
         schedule = place.openingHours?.weekdayText.orEmpty(),
-        types = place.types.orEmpty(),
+        types = place.placeTypes.orEmpty(),
         photoMetadata = place.photoMetadatas.orEmpty()
     )
 
     internal constructor(prediction: AutocompletePrediction): this(
         id = prediction.placeId,
         name = prediction.getFullText(null).toString(),
-        types = prediction.placeTypes
+        types = prediction.types.orEmpty()
     )
 
     internal constructor(

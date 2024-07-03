@@ -14,4 +14,5 @@ val useCaseModule = module {
     factory { AddFavoriteUseCase(get()) }
     factory { RemoveFavoriteUseCase(get()) }
     factory { GetFindPlaceUseCase(get()) }
+    factory { GetIsOpenUseCase(get()) }
 }

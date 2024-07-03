@@ -7,7 +7,11 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +59,7 @@ fun LoadDetail(
         place = viewModel.place,
         navController = navController,
         isFavorite = viewModel.isFavorite,
+        isOpen = viewModel.isOpen,
         onFavorite = { viewModel.setFavorite() }
     )
 }
@@ -65,13 +70,14 @@ fun Detail(
     place: PlaceBO?,
     navController: NavHostController,
     isFavorite: Boolean,
+    isOpen: Boolean,
     onFavorite: () -> Unit
 ) {
     val density = LocalDensity.current
     val scaffoldState = rememberScaffoldState()
     val swipeableState = rememberSwipeableState(0)
-    var colapsedHeight by remember { mutableStateOf( 0F) }
-    var photoHeight by remember { mutableStateOf( 0F) }
+    var colapsedHeight by remember { mutableFloatStateOf( 0F) }
+    var photoHeight by remember { mutableFloatStateOf( 0F) }
     val anchors = mapOf(0f to 0, -colapsedHeight to 1)
     val yOffset = try {
         swipeableState.offset.value.roundToInt()
@@ -132,7 +138,7 @@ fun Detail(
                             navController.popBackStack()
                         }) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = null,
                                 tint = MaterialTheme.colors.onPrimary
                             )
@@ -179,6 +185,7 @@ fun Detail(
                 if (place != null) {
                     DetailBody(
                         place = place,
+                        isOpen = isOpen,
                         modifier = Modifier
                             .fillMaxSize()
                             .offset { offset }
@@ -192,6 +199,7 @@ fun Detail(
 @Composable
 fun DetailBody(
     place: PlaceBO,
+    isOpen: Boolean,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -220,9 +228,9 @@ fun DetailBody(
                 ActionButton(onCLick = {
                     val intent = IntentBuilder.viewIntent(webSite)
                     context.startActivity(intent)
-                }, icon = Icons.Default.ExitToApp, text = webSite.toString())
+                }, icon = Icons.AutoMirrored.Filled.ExitToApp, text = webSite.toString())
             }
-            Info(place = place)
+            Info(place = place, isOpen = isOpen)
         }
     }
 }
@@ -268,7 +276,8 @@ fun Photo(
 
 @Composable
 fun Info(
-    place: PlaceBO
+    place: PlaceBO,
+    isOpen: Boolean
 ) {
     ColumnItem {
         Row(
@@ -278,8 +287,7 @@ fun Info(
                 .fillMaxWidth()
                 .padding(bottom = 5.dp)
         ) {
-            val isOpen = place.isOpen
-            if (isOpen != null) {
+            if (place.schedule.isNotEmpty()) {
                 Text(
                     text = stringResource(if (isOpen) R.string.place_open else R.string.place_closed)
                 )
@@ -343,10 +351,10 @@ fun DetailPreview() {
                     phone = "+34 647 80 96 01",
                     rating = 4.4,
                     numRatings = 335,
-                    isOpen = false,
                     webSite = Uri.parse("https://es-es.facebook.com/pages/category/Tapas-Bar---Restaurant/La-Bruja-Motera-1784528441795885/"),
                     schedule = listOf("Monday: Closed", "Tuesday: 7:30 AM – 10:00 PM", "Wednesday: 7:30 AM – 10:00 PM", "Thursday: 7:30 AM – 10:00 PM", "Friday: 8:30 AM – 11:00 PM", "Saturday: 8:30 AM – 11:00 PM", "Sunday: 8:30 AM – 5:00 PM")
-                )
+                ),
+                isOpen = false
             )
         }
     }

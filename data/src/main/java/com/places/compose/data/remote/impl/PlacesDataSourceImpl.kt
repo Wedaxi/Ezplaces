@@ -11,6 +11,8 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.IsOpenRequest
+import com.google.android.libraries.places.api.net.IsOpenResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.places.compose.data.remote.PlacesDataSource
 import kotlin.coroutines.resume
@@ -94,6 +96,12 @@ internal class PlacesDataSourceImpl(
                 .setQuery(query)
                 .setOrigin(getLocation()?.let { LatLng(it.latitude, it.longitude) })
                 .build()
+        )
+    )
+
+    override suspend fun isOpen(id: String) = getData(
+        placesClient.isOpen(
+            IsOpenRequest.newInstance(id)
         )
     )
 }

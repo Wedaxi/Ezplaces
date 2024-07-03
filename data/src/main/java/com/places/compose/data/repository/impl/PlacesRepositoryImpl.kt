@@ -37,4 +37,6 @@ internal class PlacesRepositoryImpl(
         appDatabase.placeDAO().delete(place)
         appDatabase.favoriteDAO().delete(FavoriteBO(place.id))
     }
+
+    override suspend fun isOpen(id: String) = dataSource.isOpen(id)?.isOpen ?: false
 }
