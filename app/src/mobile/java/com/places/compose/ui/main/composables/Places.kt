@@ -16,6 +16,9 @@ import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.places.compose.data.model.CoordinatesBO
 import com.places.compose.data.model.PlaceBO
 import com.places.compose.R
@@ -43,6 +44,7 @@ import com.places.compose.util.IntentBuilder
 import kotlinx.coroutines.launch
 
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun LoadPlaces(
     preferencesViewModel: PreferencesViewModel,
@@ -59,6 +61,7 @@ fun LoadPlaces(
 }
 
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun Tabs(
     preferencesViewModel: PreferencesViewModel,
@@ -159,49 +162,60 @@ fun Tabs(
         HorizontalPager(
             state = pagerState
         ) { page ->
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(viewModel.isRefreshing),
-                onRefresh = {
-                    viewModel.refresh(pagerState.currentPage)
-                }
-            ) {
-                Places(
-                    innerPadding = innerPadding,
-                    listener = listener,
-                    navController = navController,
-                    places = if (page == 0) viewModel.places else viewModel.favorites,
-                    coordinates = viewModel.lastLocation
-                )
-            }
+            Places(
+                innerPadding = innerPadding,
+                listener = listener,
+                navController = navController,
+                places = if (page == 0) viewModel.places else viewModel.favorites,
+                refreshing = viewModel.isRefreshing,
+                onRefresh = { viewModel.refresh(page) },
+                coordinates = viewModel.lastLocation
+            )
         }
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun Places(
     innerPadding: PaddingValues,
     listener: ShowAdListener,
     navController: NavHostController,
     places: List<PlaceBO>?,
+    refreshing: Boolean,
+    onRefresh: () -> Unit,
     coordinates: CoordinatesBO? = null
 ) {
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing,
+        onRefresh = onRefresh
+    )
     AnimatedVisibility(
-        visible = places != null,
+        visible = !places.isNullOrEmpty(),
         enter = slideInVertically(),
         exit = slideOutVertically()
     ) {
-        LazyColumn(
-            contentPadding = innerPadding,
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier.pullRefresh(pullRefreshState)
         ) {
-            items(items = places.orEmpty(), key = { it.id }) { item ->
-                Place(
-                    listener = listener,
-                    navController = navController,
-                    place = item,
-                    location = coordinates
-                )
+            LazyColumn(
+                contentPadding = innerPadding,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(items = places.orEmpty(), key = { it.id }) { item ->
+                    Place(
+                        listener = listener,
+                        navController = navController,
+                        place = item,
+                        location = coordinates
+                    )
+                }
             }
+            PullRefreshIndicator(
+                refreshing = refreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }

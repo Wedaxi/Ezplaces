@@ -52,7 +52,6 @@ google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", ve
 google-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 google-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 google-firebase-perf = { group = "com.google.firebase", name = "firebase-perf-ktx" }
-google-accompanist-swiperefresh = { group = "com.google.accompanist", name = "accompanist-swiperefresh", version.ref = "accompanist" }
 google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 google-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -74,7 +73,7 @@ wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-fou
 wear-play-services = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "wearGoogleServices" }
 
 [bundles]
-accompanist = ["google-accompanist-swiperefresh", "google-accompanist-permissions", "google-accompanist-systemuicontroller"]
+accompanist = ["google-accompanist-permissions", "google-accompanist-systemuicontroller"]
 firebase = ["google-firebase-analytics", "google-firebase-crashlytics", "google-firebase-perf"]
 
 [plugins]
