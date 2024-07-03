@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -106,7 +107,7 @@ fun About(
 ) {
     RadioButtonMenu(
         text = stringResource(id = R.string.menu_credits),
-        icon = Icons.Default.List,
+        icon = Icons.AutoMirrored.Filled.List,
         onCLick = onClick
     )
 }

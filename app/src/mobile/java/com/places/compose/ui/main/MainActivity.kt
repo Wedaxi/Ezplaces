@@ -3,7 +3,7 @@ package com.places.compose.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -11,8 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.places.compose.BuildConfig
@@ -28,9 +27,8 @@ import com.places.compose.ui.theme.ComposeTheme
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
-@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 class MainActivity: ComponentActivity(), MainEventsListener {
 
@@ -54,7 +52,7 @@ class MainActivity: ComponentActivity(), MainEventsListener {
         installSplashScreen()
 
         setContent {
-            navController = rememberAnimatedNavController()
+            navController = rememberNavController()
             val darkTheme = when(preferencesViewModel.selectedTheme) {
                 SelectedTheme.SYSTEM -> isSystemInDarkTheme()
                 SelectedTheme.LIGHT -> false

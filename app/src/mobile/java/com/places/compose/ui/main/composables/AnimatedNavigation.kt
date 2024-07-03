@@ -1,32 +1,31 @@
 package com.places.compose.ui.main.composables
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.places.compose.callbacks.MainEventsListener
 import com.places.compose.ui.main.viewmodel.MainViewModel
 import com.places.compose.ui.main.viewmodel.PreferencesViewModel
 
-@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
-@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @Composable
 fun AnimatedNavigation(
     mainViewModel: MainViewModel,
     preferencesViewModel: PreferencesViewModel,
     listener: MainEventsListener,
-    navController: NavHostController = rememberAnimatedNavController()
+    navController: NavHostController = rememberNavController()
 ) {
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = PERMISSION
     ) {

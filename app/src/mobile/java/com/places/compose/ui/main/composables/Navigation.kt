@@ -1,5 +1,6 @@
 package com.places.compose.ui.main.composables
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -8,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.places.compose.callbacks.MainEventsListener
 import com.places.compose.ui.main.viewmodel.MainViewModel
@@ -21,8 +21,8 @@ const val ID = "id"
 const val CREDITS = "credits"
 const val POLICY = "policy"
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
-@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @Composable
 fun Navigation(

@@ -3,13 +3,17 @@ package com.places.compose.ui.main.composables
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
@@ -24,10 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.places.compose.data.model.CoordinatesBO
@@ -42,7 +42,7 @@ import com.places.compose.ui.theme.ComposeTheme
 import com.places.compose.util.IntentBuilder
 import kotlinx.coroutines.launch
 
-@ExperimentalPagerApi
+@ExperimentalFoundationApi
 @Composable
 fun LoadPlaces(
     preferencesViewModel: PreferencesViewModel,
@@ -58,7 +58,7 @@ fun LoadPlaces(
     )
 }
 
-@ExperimentalPagerApi
+@ExperimentalFoundationApi
 @Composable
 fun Tabs(
     preferencesViewModel: PreferencesViewModel,
@@ -68,7 +68,7 @@ fun Tabs(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(initialPage = preferencesViewModel.selectedHome.ordinal)
+    val pagerState = rememberPagerState(initialPage = preferencesViewModel.selectedHome.ordinal, pageCount = { 2 })
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scaffoldState = rememberScaffoldState(drawerState = drawerState)
     Scaffold(
@@ -116,7 +116,7 @@ fun Tabs(
                     selectedTabIndex = pagerState.currentPage,
                     indicator = { tabPositions ->
                         TabRowDefaults.Indicator(
-                            modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
                         )
                     }
                 ) {
@@ -157,7 +157,6 @@ fun Tabs(
             context.startActivity(intent)
         }
         HorizontalPager(
-            count = 2,
             state = pagerState
         ) { page ->
             SwipeRefresh(
