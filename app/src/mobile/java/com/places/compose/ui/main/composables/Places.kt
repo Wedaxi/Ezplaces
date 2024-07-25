@@ -9,9 +9,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
@@ -23,7 +26,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -190,13 +196,17 @@ fun Places(
         refreshing = refreshing,
         onRefresh = onRefresh
     )
-    AnimatedVisibility(
-        visible = !places.isNullOrEmpty(),
-        enter = slideInVertically(),
-        exit = slideOutVertically()
+    Box(
+        modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState)
     ) {
-        Box(
-            modifier = Modifier.pullRefresh(pullRefreshState)
+        // hack to enable pull refresh when it's empty
+        if (places.isNullOrEmpty()) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {}
+        }
+        AnimatedVisibility(
+            visible = !places.isNullOrEmpty(),
+            enter = slideInVertically(),
+            exit = slideOutVertically()
         ) {
             LazyColumn(
                 contentPadding = innerPadding,
@@ -211,13 +221,14 @@ fun Places(
                     )
                 }
             }
-            PullRefreshIndicator(
-                refreshing = refreshing,
-                state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
         }
+        PullRefreshIndicator(
+            refreshing = refreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
+
 }
 
 @Composable

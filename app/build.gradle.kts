@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 object Constants {
@@ -11,6 +12,14 @@ object Constants {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("$rootDir/debug.keystore")
+        }
+        create("release") {
+            storeFile = file("$rootDir/upload-keystore.jks")
+        }
+    }
     compileSdk = 34
 
     defaultConfig {
@@ -25,7 +34,11 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -33,9 +46,9 @@ android {
     productFlavors {
         create("mobile") {
             dimension = "device"
-            minSdk = 21
-            versionCode = 13
-            versionName = "0.7.1"
+            minSdk = 24
+            versionCode = 14
+            versionName = "0.7.2"
 
             buildConfigField("boolean", "ENABLE_ADS", "${Constants.ADS_ENABLED}")
         }
@@ -49,18 +62,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
     }
     packaging {
         resources {
