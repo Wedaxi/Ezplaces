@@ -1,18 +1,50 @@
 package com.places.compose.ui.main.composables
 
 import android.net.Uri
-import androidx.compose.animation.*
-import androidx.compose.foundation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -48,7 +80,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-@ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @Composable
 fun LoadDetail(
     id: String,
@@ -64,7 +96,9 @@ fun LoadDetail(
     )
 }
 
-@ExperimentalMaterialApi
+enum class DragValue { Start, End }
+
+@ExperimentalFoundationApi
 @Composable
 fun Detail(
     place: PlaceBO?,
@@ -75,17 +109,19 @@ fun Detail(
 ) {
     val density = LocalDensity.current
     val scaffoldState = rememberScaffoldState()
-    val swipeableState = rememberSwipeableState(0)
-    var colapsedHeight by remember { mutableFloatStateOf( 0F) }
+    var collapsedHeight by remember { mutableFloatStateOf( 0F) }
     var photoHeight by remember { mutableFloatStateOf( 0F) }
-    val anchors = mapOf(0f to 0, -colapsedHeight to 1)
-    val yOffset = try {
-        swipeableState.offset.value.roundToInt()
-    } catch (e: IllegalArgumentException) {
-        0
+    val draggableState = remember {
+        AnchoredDraggableState(
+            initialValue = DragValue.Start,
+            positionalThreshold = { distance -> distance * 0.5f },
+            velocityThreshold = { with(density) { 125.dp.toPx() } },
+            animationSpec = SpringSpec<Float>()
+        )
     }
-    val offset = IntOffset(x = 0, y = yOffset)
-    val relativeOffset = yOffset / -colapsedHeight
+    val yOffset = runCatching { draggableState.requireOffset() }.getOrElse { 0F }
+    val offset = IntOffset(x = 0, y = yOffset.roundToInt())
+    val relativeOffset = yOffset / -collapsedHeight
     val alpha = min(1F, max(0F, relativeOffset)).takeIf { !it.isNaN() } ?: 1F
     Scaffold(
         scaffoldState = scaffoldState,
@@ -100,7 +136,13 @@ fun Detail(
                             .offset { offset }
                             .onSizeChanged { size ->
                                 photoHeight = size.height.toFloat()
-                                colapsedHeight = photoHeight - with(density) { 56.dp.toPx() }
+                                collapsedHeight = photoHeight - with(density) { 56.dp.toPx() }
+                                draggableState.updateAnchors(
+                                    DraggableAnchors {
+                                        DragValue.Start at 0f
+                                        DragValue.End at -collapsedHeight
+                                    }
+                                )
                             }
                     )
                     Box(
@@ -164,13 +206,7 @@ fun Detail(
                 )
             }
         },
-        modifier = Modifier
-            .swipeable(
-                state = swipeableState,
-                anchors = anchors,
-                thresholds = { _, _ -> FractionalThreshold(0.5f) },
-                orientation = Orientation.Vertical
-            )
+        modifier = Modifier.anchoredDraggable(state = draggableState, orientation = Orientation.Vertical)
     ) { innerPadding ->
         Box(
             modifier = Modifier

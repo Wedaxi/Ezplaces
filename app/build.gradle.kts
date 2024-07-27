@@ -47,8 +47,8 @@ android {
         create("mobile") {
             dimension = "device"
             minSdk = 24
-            versionCode = 14
-            versionName = "0.7.2"
+            versionCode = 15
+            versionName = "0.7.3"
 
             buildConfigField("boolean", "ENABLE_ADS", "${Constants.ADS_ENABLED}")
         }
